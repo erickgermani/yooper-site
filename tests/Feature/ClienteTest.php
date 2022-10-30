@@ -7,8 +7,7 @@ use App\Models\Servico;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Database\Seeders\ClienteSeeder;
 use Tests\TestCase;
 
 class ClienteTest extends TestCase
@@ -24,7 +23,6 @@ class ClienteTest extends TestCase
     //     $servico->create([ 'nome' => 'CRM' ]);
     //     $servico->create([ 'nome' => 'Mídia' ]);
     //     $servico->create([ 'nome' => 'SEO' ]);
-
     // }
 
     // public function test_ver_todos_os_clientes()
@@ -52,27 +50,31 @@ class ClienteTest extends TestCase
     //     $response->assertStatus(200);
     // }
 
-    public function test_criar_cliente_com_dados_preenchidos()
-    {        
-        $servico = new Servico();
+    // public function test_criar_cliente_com_dados_preenchidos()
+    // {        
+    //     $servico = new Servico();
 
         // $servico->create([ 'nome' => 'Social Media' ]);
         // $servico->create([ 'nome' => 'CRM' ]);
         // $servico->create([ 'nome' => 'Mídia' ]);
         // $servico->create([ 'nome' => 'SEO' ]);
 
-        $id = $servico->get()->first()->id;
+    //     $id = $servico->get()->first()->id;
 
-        $cliente = [
-            "nome" => fake()->name(),
-            "email" => fake()->safeEmail(),
-            "telefone" => '(11) 11111-1111',
-            "nome-da-empresa" => fake()->name(),
-            "servicos-contratados" => "[$id]"
-        ];
+    //     $cliente = [
+    //         "nome" => fake()->name(),
+    //         "email" => fake()->safeEmail(),
+    //         "telefone" => '(11) 11111-1111',
+    //         "nome-da-empresa" => fake()->name(),
+    //         "servicos-contratados" => "[$id]"
+    //     ];
 
-        $response = $this->post('/app/cliente/cadastrar', $cliente);
+    //     $response = $this->post('/app/cliente/cadastrar', $cliente);
 
-        $response->assertStatus(200);
+    //     $response->assertStatus(200);
+    // }
+
+    public function test_criar_clientes_com_seeder(){
+        Cliente::factory()->count(50)->create();
     }
 }

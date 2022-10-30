@@ -62,11 +62,16 @@ div.acoes {
                 margin-right: 10px;
             }
         }
+
+        
     }
 }
 
 body {
     a {
         text-decoration: none;
+    }
+    ul, p {
+        margin: 0;
     }
 }

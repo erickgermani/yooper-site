@@ -57,6 +57,8 @@
                             </tbody>
                         </table>
 
+                        {{ $clientes->links('pagination::bootstrap-5') }}
+
                         <hr>
 
                         <div class="acoes">

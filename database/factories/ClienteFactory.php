@@ -20,7 +20,9 @@ class ClienteFactory extends Factory
             "nome" => fake()->name(),
             "email" => fake()->unique()->safeEmail(),
             "telefone" => fake()->phoneNumber(),
-            "nome_da_empresa" => fake()->name()
+            "nome_da_empresa" => fake()->name(),
+            "cadastrado_por" => 1,
+            "atualizado_por" => 1
         ];
     }
 }
