@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Cliente;
-use Database\Factories\ClienteFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ClienteSeeder extends Seeder
@@ -16,6 +14,6 @@ class ClienteSeeder extends Seeder
      */
     public function run()
     {
-        Cliente::factory(ClienteFactory::class, 50)->create();
+        Cliente::factory()->count(100)->create();
     }
 }
