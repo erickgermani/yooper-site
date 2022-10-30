@@ -37,7 +37,7 @@
     }
 }
 
-.acoes {
+div.acoes {
     float: right;
     .btn-principal {
         border-color: var(--cor-principal);
@@ -50,5 +50,21 @@
         &:first-child {
             margin-right: 10px;
         }
+    }
+}
+
+.cliente {
+    &#listar {
+        td.acoes {
+            a:first-child {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+body {
+    a {
+        text-decoration: none;
     }
 }

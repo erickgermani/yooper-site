@@ -15,7 +15,7 @@
         window.SERVICOS = @php echo json_encode($array_servicos); @endphp;
 
         @if(!empty(old('servicos-contratados')))
-            window.OLD_SERVICOS = @php echo old('servicos-contratados'); @endphp;
+            window.SERVICOS_SELECIONADOS = @php echo old('servicos-contratados'); @endphp;
         @endif
     </script>
 @endsection
@@ -23,7 +23,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-11">
                 <div class="card">
                     <div class="card-header">Cadastrar cliente</div>
 

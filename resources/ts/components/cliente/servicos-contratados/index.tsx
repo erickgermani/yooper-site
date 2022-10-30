@@ -29,7 +29,7 @@ class ServicosContratados extends Component<IProps, IState> {
         this.options = window.SERVICOS;
 
         // @ts-ignore
-        this.DEFAULT_VALUES = window?.OLD_SERVICOS ?? [];
+        this.DEFAULT_VALUES = window?.SERVICOS_SELECIONADOS ?? [];
     }
 
     onChange = (values: IOption[]): void => {
@@ -63,6 +63,7 @@ class ServicosContratados extends Component<IProps, IState> {
                     isMulti
                     // @ts-ignore
                     onChange={this.onChange}
+                    isDisabled={true}
                 />
                 <input type="hidden" name="servicos-contratados" value={servicosContratados} />
             </>

@@ -40,6 +40,6 @@ Route::prefix('app')->group(function() {
         Route::get('/cadastrar', 'App\Http\Controllers\ClienteController@cadastrar')->name('cliente.cadastrar');
         Route::post('/cadastrar', 'App\Http\Controllers\ClienteController@store')->name('cliente.cadastrar');
 
-
+        Route::get('/detalhes/{id}', 'App\Http\Controllers\ClienteController@detalhes')->name('cliente.detalhes');
     });
 });

@@ -66,10 +66,22 @@ class ClienteController extends Controller
         }
     }
 
-    public function show(Cliente $cliente)
+    public function detalhes($id)
     {
-        return view('cliente.detalhes', [ 
-            "cliente" => $cliente 
-        ]);
+        $cliente = Cliente::where('id', 'like', $id)->take(1)->get()->first();
+
+        if(!empty($cliente)) {
+            $servicos = Servico::get();
+
+            return view('cliente.detalhes', [ 
+                "cliente" => $cliente,
+                "servicos" => $servicos 
+            ]);
+        } else {
+            return view('cliente.feedback', [ 
+                "titulo" => "Falha", 
+                "mensagem" => "Não foi possível encontrar o cliente em nossa base de dados." 
+            ]);
+        }
     }
 }
