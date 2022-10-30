@@ -24,6 +24,7 @@ class ClienteTest extends TestCase
     //     $servico->create([ 'nome' => 'CRM' ]);
     //     $servico->create([ 'nome' => 'Mídia' ]);
     //     $servico->create([ 'nome' => 'SEO' ]);
+
     // }
 
     // public function test_ver_todos_os_clientes()
@@ -33,27 +34,45 @@ class ClienteTest extends TestCase
     //     $response->assertStatus(200);
     // }
 
+    // public function test_atualizar_cliente_com_dados_corretos()
+    // {
+    //     $clientes = new Cliente();
+
+    //     $cliente = $clientes->get()->last();
+
+    //     $response = $this->post(route('cliente.atualizar', [ "id" => $cliente->id ]), [
+    //         "nome" => $cliente->nome,
+    //         "email" => $cliente->email,
+    //         "telefone" => $cliente->telefone,
+    //         "nome-da-empresa" => $cliente->nome_da_empresa,
+    //         "atualizado-por" => $cliente->atualizado_por,
+    //         "servicos-contratados" => "[7,6]",
+    //     ]);
+
+    //     $response->assertStatus(200);
+    // }
+
     public function test_criar_cliente_com_dados_preenchidos()
     {        
         $servico = new Servico();
 
-        $servico->create([ 'nome' => 'Social Media' ]);
-        $servico->create([ 'nome' => 'CRM' ]);
-        $servico->create([ 'nome' => 'Mídia' ]);
-        $servico->create([ 'nome' => 'SEO' ]);
+        // $servico->create([ 'nome' => 'Social Media' ]);
+        // $servico->create([ 'nome' => 'CRM' ]);
+        // $servico->create([ 'nome' => 'Mídia' ]);
+        // $servico->create([ 'nome' => 'SEO' ]);
 
         $id = $servico->get()->first()->id;
 
         $cliente = [
             "nome" => fake()->name(),
             "email" => fake()->safeEmail(),
-            "telefone" => fake()->phoneNumber(),
+            "telefone" => '(11) 11111-1111',
             "nome-da-empresa" => fake()->name(),
             "servicos-contratados" => "[$id]"
         ];
 
-        $response = $this->post('/app/cliente', $cliente);
+        $response = $this->post('/app/cliente/cadastrar', $cliente);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 }

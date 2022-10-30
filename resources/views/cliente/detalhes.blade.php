@@ -26,7 +26,7 @@
             $array_servicos_contratados = [];
             
             foreach ($servicos_contratados as $servico_contratado) {
-                $servico = Servico::where('id', 'like', $servico_contratado->servico_id)->take(1)->get()->first();
+                $servico = Servico::find($servico_contratado->servico_id);
             
                 array_push($array_servicos_contratados, $servico->id);
             }
@@ -96,7 +96,16 @@
 
                         <div class="acoes">
                             <a href="{{ route('home') }}" class="btn btn-primary btn-principal">Voltar</a>
+                            <div>
+                                <a href="{{ route('cliente.deletar', ['id' => $cliente->id]) }}"
+                                    class="btn btn-outline-danger" data-need-confirmation="true"
+                                    data-message="Deseja realmente excluir o cliente {{ $cliente->nome }}?">
+                                    Deletar
+                                </a>
 
+                                <a href="{{ route('cliente.atualizar', ['id' => $cliente->id]) }}"
+                                    class="btn btn-primary btn-principal">Atualizar cliente</a>
+                            </div>
                         </div>
                     </div>
                 </div>

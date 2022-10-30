@@ -19,7 +19,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('telefone');
             $table->string('nome_da_empresa');
+            $table->unsignedBigInteger('cadastrado_por');
+            $table->unsignedBigInteger('atualizado_por');
             $table->timestamps();
+
+            $table->foreign('cadastrado_por')->references('id')->on('users');
+            $table->foreign('atualizado_por')->references('id')->on('users');
         });
     }
 

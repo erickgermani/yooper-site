@@ -17,7 +17,6 @@
     <!-- Scripts -->
     @viteReactRefresh
     @vite(['resources/sass/app.scss', 'resources/ts/app.ts'])
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     @yield('scripts')
 </head>
 
@@ -68,6 +67,10 @@
         <main class="py-4">
             @yield('content')
         </main>
+    </div>
+
+    <div id="components">
+        @yield('components')
     </div>
 </body>
 

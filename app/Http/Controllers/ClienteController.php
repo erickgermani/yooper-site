@@ -4,33 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Http\Requests\StoreClienteRequest;
+use App\Http\Requests\UpdateClienteRequest;
 use App\Models\Servico;
 use App\Models\ServicoContratado;
 use Exception;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ClienteController extends Controller
 {
 
-    public function __construct(Cliente $cliente) {
+    public function __construct(Cliente $cliente)
+    {
         $this->cliente = $cliente;
     }
 
-    public function listar()
+    public function index()
     {
         $clientes = $this->cliente->paginate(10);
 
-        return view('cliente.listar', [ 
-            "clientes" => $clientes 
+        return view('cliente.listar', [
+            "clientes" => $clientes
         ]);
     }
 
-    public function cadastrar()
+    public function create()
     {
-        $servicos = Servico::get();
+        try {
+            $servicos = Servico::get();
 
-        return view('cliente.cadastrar', [ 
-            "servicos" => $servicos 
-        ]);
+            if (!empty($servicos)) {
+                return view('cliente.cadastrar', [
+                    "servicos" => $servicos
+                ]);
+            } else {
+                return redirect(route('feedback', [
+                    "titulo" => "Falha",
+                    "mensagem" => "Um erro ocorreu e não foi possível carregar as informações necessárias. Tente novamente mais tarde.",
+                    "pagina_anterior" => route('home')
+                ]));
+            }
+        } catch (Exception $ex) {
+            Log::error($ex);
+
+            return redirect(route('feedback', [
+                "titulo" => "Falha",
+                "mensagem" => "Um erro ocorreu e não foi possível carregar as informações necessárias. Tente novamente mais tarde.",
+                "pagina_anterior" => route('home')
+            ]));
+        }
     }
 
     public function store(StoreClienteRequest $request)
@@ -40,48 +62,202 @@ class ClienteController extends Controller
                 "nome" => $request->get('nome'),
                 "email" => $request->get('email'),
                 "telefone" => $request->get('telefone'),
-                "nome_da_empresa" => $request->get('nome-da-empresa')
+                "nome_da_empresa" => $request->get('nome-da-empresa'),
+                "cadastrado_por" => Auth::user()->id,
+                "atualizado_por" => Auth::user()->id
             ];
-    
+
             $cliente = $this->cliente->create($params);
-    
+
             $servicos_contratados = json_decode($request->get('servicos-contratados'));
-    
-            foreach($servicos_contratados as $servico_contratado) {
+
+            foreach ($servicos_contratados as $servico_contratado) {
                 ServicoContratado::create([
                     "cliente_id" => $cliente->id,
                     "servico_id" => $servico_contratado
                 ]);
             }
-    
-            return view('cliente.feedback', [ 
-                "titulo" => "Sucesso", 
-                "mensagem" => "Cliente cadastrado com sucesso!"
-            ]);
+
+            return redirect(route('feedback', [
+                "titulo" => "Sucesso",
+                "mensagem" => "Cliente cadastrado com sucesso.",
+                "pagina_anterior" => route('home')
+            ]));
         } catch (Exception $ex) {
-            return view('cliente.feedback', [ 
-                "titulo" => "Falha", 
-                "mensagem" => "Um erro ocorreu e não foi possível cadastrar o cliente. Tente novamente mais tarde." 
+            Log::error($ex);
+
+            return redirect(route('feedback', [
+                "titulo" => "Falha",
+                "mensagem" => "Não foi possível cadastrar o cliente. Tente novamente mais tarde.",
+                "pagina_anterior" => route('cliente.cadastrar')
+            ]));
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            $cliente = $this->cliente->find($id);
+
+            if (!empty($cliente)) {
+                $servicos = Servico::get();
+
+                return view('cliente.detalhes', [
+                    "cliente" => $cliente,
+                    "servicos" => $servicos
+                ]);
+            } else {
+                return redirect(route('feedback', [
+                    "titulo" => "Falha",
+                    "mensagem" => "Cliente não encontrado.",
+                    "pagina_anterior" => route('home')
+                ]));
+            }
+        } catch (Exception $ex) {
+            Log::error($ex);
+
+            return redirect(route('feedback'), [
+                "titulo" => "Falha",
+                "mensagem" => "Não foi possível encontrar o cliente. Tente novamente mais tarde.",
+                "pagina_anterior" => route('home')
             ]);
         }
     }
 
-    public function detalhes($id)
+    public function edit($id)
     {
-        $cliente = Cliente::where('id', 'like', $id)->take(1)->get()->first();
+        try {
+            $cliente = $this->cliente->find($id);
 
-        if(!empty($cliente)) {
-            $servicos = Servico::get();
+            if (!empty($cliente)) {
+                $servicos = Servico::get();
 
-            return view('cliente.detalhes', [ 
-                "cliente" => $cliente,
-                "servicos" => $servicos 
-            ]);
-        } else {
-            return view('cliente.feedback', [ 
-                "titulo" => "Falha", 
-                "mensagem" => "Não foi possível encontrar o cliente em nossa base de dados." 
-            ]);
+                return view('cliente.atualizar', [
+                    "cliente" => $cliente,
+                    "servicos" => $servicos
+                ]);
+            } else {
+                return redirect(route('feedback', [
+                    "titulo" => "Falha",
+                    "mensagem" => "Cliente não encontrado.",
+                    "pagina_anterior" => route('home')
+                ]));
+            }
+        } catch (Exception $ex) {
+            Log::error($ex);
+
+            return redirect(route('feedback', [
+                "titulo" => "Falha",
+                "mensagem" => "Não foi possível encontrar o cliente. Tente novamente mais tarde.",
+                "pagina_anterior" => route('home')
+            ]));
+        }
+    }
+
+    public function update(UpdateClienteRequest $request, $id)
+    {
+        try {
+            $cliente = $this->cliente->find($id);
+
+            if ($cliente !== null) {
+                $r_servicos_contratados = $request->get('servicos-contratados');
+                $r_old_servicos_contratados = $request->get('old-servicos-contratados');
+
+                if ($r_servicos_contratados !== $r_old_servicos_contratados) {
+                    $r_servicos_contratados = json_decode($r_servicos_contratados);
+                    $r_old_servicos_contratados = json_decode($r_old_servicos_contratados);
+
+                    foreach ($r_old_servicos_contratados as $old_servico_id) {
+                        if (!in_array($old_servico_id, $r_servicos_contratados)) {
+                            $servicos_contratados = ServicoContratado::where('cliente_id', '=', $id)->where('servico_id', '=', $old_servico_id)->take(1)->get()->first();
+
+                            if ($servicos_contratados !== null) {
+                                $servicos_contratados->delete();
+                            }
+                        }
+                    }
+
+                    foreach ($r_servicos_contratados as $servico_id) {
+                        if (!in_array($servico_id, $r_old_servicos_contratados)) {
+                            $servicos_contratados = ServicoContratado::create([
+                                "cliente_id" => $id,
+                                "servico_id" => $servico_id,
+                            ]);
+                        }
+                    }
+                }
+
+                $params = [
+                    "nome" => $request->get('nome'),
+                    "email" => $request->get('email'),
+                    "telefone" => $request->get('telefone'),
+                    "nome_da_empresa" => $request->get('nome-da-empresa'),
+                    "atualizado_por" => Auth::user()->id
+                ];
+
+                $cliente->update($params);
+
+                return redirect(route('feedback', [
+                    "titulo" => "Sucesso",
+                    "mensagem" => "O cliente foi atualizado com sucesso!",
+                    "pagina_anterior" => route('cliente.detalhes', ["id" => $id])
+                ]));
+            } else {
+                return redirect(route('feedback', [
+                    "titulo" => "Falha",
+                    "mensagem" => "Cliente não encontrado.",
+                    "pagina_anterior" => route('home')
+                ]));
+            }
+        } catch (Exception $ex) {
+            Log::error($ex);
+
+            return redirect(route('feedback', [
+                "titulo" => "Falha",
+                "mensagem" => "Não foi possível atualizar o cliente. Tente novamente mais tarde.",
+                "pagina_anterior" => route('cliente.atualizar', ["id" => $id])
+            ]));
+        }
+    }
+
+    public function destroy($id)
+    {
+        Log::error('CLIENTE DELETADO PORRA');
+
+        try {
+            $cliente = $this->cliente->find($id);
+
+            if($cliente !== null) {
+                $servicos_contratados = ServicoContratado::where('cliente_id', '=', $id)->get();
+    
+                if($servicos_contratados !== null) {
+                    foreach($servicos_contratados as $servico_contratado) {
+                        $servico_contratado->delete();
+                    }
+                }
+
+                $cliente->delete();
+                
+                return redirect(route('feedback', [
+                    "titulo" => "Sucesso",
+                    "mensagem" => "O cliente foi deletado com sucesso.",
+                    "pagina_anterior" => route('home')
+                ]));
+            } else {
+                return redirect(route('feedback', [
+                    "titulo" => "Falha",
+                    "mensagem" => "Cliente não encontrado.",
+                    "pagina_anterior" => route('home')
+                ]));
+            }            
+        } catch (Exception $ex) {
+            Log::error($ex);
+
+            return redirect(route('feedback', [
+                "titulo" => "Falha",
+                "mensagem" => "Não foi possível excluir o cliente. Tente novamente mais tarde.",
+                "pagina_anterior" => route('cliente.detalhes', [ "id" => $id])
+            ]));
         }
     }
 }

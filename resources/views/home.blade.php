@@ -15,8 +15,10 @@
                         <hr>
 
                         <div class="acoes">
-                            <a href="{{ route('cliente.listar') }}" class="btn btn-outline-primary btn-principal">Ver todos os clientes</a>
-                            <a href="{{ route('cliente.cadastrar') }}" class="btn btn-outline-primary btn-principal">Cadastrar cliente</a>
+                            <div>
+                                <a href="{{ route('cliente.listar') }}" class="btn btn-outline-primary btn-principal">Ver todos os clientes</a>
+                                <a href="{{ route('cliente.cadastrar') }}" class="btn btn-outline-primary btn-principal">Cadastrar cliente</a>
+                            </div>
                         </div>
                     </div>
                 </div>

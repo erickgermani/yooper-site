@@ -26,6 +26,10 @@ class Cliente {
         this.logs.push(
             { 'nome': 'ADICIONAR_MASCARA_NO_TELEFONE', 'resposta': this.adicionarMascaraDeEntrada() }
         );
+
+        this.logs.push(
+            { 'nome': 'ABRIR_MODAL', 'resposta': this.exigirConfirmacao() }
+        );
     }
 
     public static debug = (): void => {
@@ -35,8 +39,39 @@ class Cliente {
 
                 if(resposta.status == 'erro') {
                     console.error(`${nome} falhou - ${resposta.mensagem}`);
+                } else {
+                    console.debug(`${nome} carregado com sucesso`);
                 }
             }
+        }
+    }
+
+    private static exigirConfirmacao = (): IResponse => {
+        try {
+            $('a[data-need-confirmation="true"]').on('click', (event) => {
+                const $target = $(event.target),    
+                    href = $target?.attr('href'),
+                    message = $target?.data('message') ?? 'Você realmente deseja prosseguir com esta ação?';
+    
+                if(!href) return;
+    
+                if(!confirm(message + ' Esta ação não poderá ser desfeita.')) 
+                    event.preventDefault();
+            });
+    
+            $('form[data-need-confirmation="true"]').on('submit', (event) => {
+                event.preventDefault();
+    
+                const $target = $(event.target),
+                    message = $target?.data('message') ?? 'Você realmente deseja prosseguir com esta ação?';
+    
+                if(confirm(message + ' Esta ação não poderá ser desfeita.')) 
+                    (event.currentTarget as HTMLFormElement).submit();
+            });
+    
+            return { status: 'sucesso' };
+        } catch(error) {
+            return { status: 'erro', mensagem: error.message };
         }
     }
 

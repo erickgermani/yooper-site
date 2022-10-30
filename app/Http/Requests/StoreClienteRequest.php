@@ -7,21 +7,11 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreClienteRequest extends FormRequest
 {
 
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
@@ -29,15 +19,10 @@ class StoreClienteRequest extends FormRequest
             "email" => "required|email:rfc:dns|unique:clientes",
             "telefone" => "required|min:14|max:15",
             "nome-da-empresa" => "required|min:3|max:250",
-            "servicos-contratados" => "required|min:3"
+            "servicos-contratados" => "required|min:3",
         ];
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function messages()
     {
         return [
@@ -53,7 +38,8 @@ class StoreClienteRequest extends FormRequest
 
             "nome-da-empresa.required" => "O campo nome da empresa é obrigatório.",
 
-            "servicos-contratados.required" => "É necessário selecionar ao menos um serviço"
+            "servicos-contratados.required" => "É necessário selecionar ao menos um serviço",
+            "servicos-contratados.min" => "É necessário selecionar ao menos um serviço"
         ];
     }
 }

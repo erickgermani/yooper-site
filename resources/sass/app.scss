@@ -38,7 +38,6 @@
 }
 
 div.acoes {
-    float: right;
     .btn-principal {
         border-color: var(--cor-principal);
         background: transparent;
@@ -47,8 +46,11 @@ div.acoes {
             color: #fff;
             background: var(--cor-principal);
         }
-        &:first-child {
-            margin-right: 10px;
+    }
+    div {
+        float: right;
+        .btn {
+            margin-left: 10px;
         }
     }
 }
