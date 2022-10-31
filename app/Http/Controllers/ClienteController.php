@@ -212,8 +212,6 @@ class ClienteController extends Controller
 
     public function destroy($id)
     {
-        Log::error('CLIENTE DELETADO PORRA');
-
         try {
             $cliente = $this->cliente->find($id);
 
