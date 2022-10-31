@@ -5,7 +5,7 @@
 
 @extends('layouts.app', [
     'classe' => 'cliente',
-    'id' => 'listar',
+    'id' => 'buscar',
 ])
 
 @section('content')
@@ -13,7 +13,7 @@
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div class="card-header">Clientes > Listagem</div>
+                    <div class="card-header">Clientes > Busca</div>
                     <div class="card-body">
                         <nav class="navbar">
                             <form class="form-inline" action="{{ route('cliente.buscar') }}" method="get">

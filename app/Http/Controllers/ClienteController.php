@@ -250,13 +250,16 @@ class ClienteController extends Controller
 
     public function search(Request $request) 
     {
-        $query = '%'.$request->input('query').'%';
+        $query = $request->input('query');
 
-        $clientes = Cliente::where('nome', 'like', $query)->paginate(10);
+        if($query == null) 
+            return redirect(route('cliente.listar'));
+        
+        $clientes = Cliente::where('nome', 'like', '%'.$query.'%')->paginate(10)->withQueryString();;
 
-        return view('cliente.listar', [
+        return view('cliente.buscar', [
             "clientes" => $clientes,
-            "query" => $request->input('query')
+            "query" => $query
         ]);
     }
 }

@@ -44,7 +44,7 @@
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div class="card-header">Clientes > Atualizar</div>
+                    <div class="card-header">Clientes > Atualizacao</div>
                     <div class="card-body">
                         <form method="post" action="{{ route('cliente.atualizar', ['id' => $cliente->id]) }}"
                             data-need-confirmation="true"

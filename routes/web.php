@@ -29,6 +29,8 @@ Route::prefix('app')->group(function() {
 
         Route::get('/listar', 'App\Http\Controllers\ClienteController@index')->name('cliente.listar');
 
+        Route::get('/buscar', 'App\Http\Controllers\ClienteController@search')->name('cliente.buscar');
+
         Route::get('/cadastrar', 'App\Http\Controllers\ClienteController@create')->name('cliente.cadastrar');
         Route::post('/cadastrar', 'App\Http\Controllers\ClienteController@store');
 
@@ -38,7 +40,5 @@ Route::prefix('app')->group(function() {
         Route::post('/atualizar/{id}', 'App\Http\Controllers\ClienteController@update');
 
         Route::get('/deletar/{id}', 'App\Http\Controllers\ClienteController@destroy')->name('cliente.deletar');
-
-        Route::post('/procurar', 'App\Http\Controllers\ClienteController@search')->name('cliente.procurar');
     });
 });

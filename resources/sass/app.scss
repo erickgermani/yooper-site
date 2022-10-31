@@ -1,11 +1,11 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+@import url("https://fonts.bunny.net/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
 
 #app {
     > .navbar {
@@ -21,7 +21,7 @@
                     box-shadow: 0 0 0 1px #fff;
                 }
                 .navbar-toggler-icon {
-                    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23fff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+                    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23fff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
                 }
             }
             .navbar-collapse {
@@ -65,41 +65,49 @@ div.acoes {
 }
 
 .cliente {
-    &#listar {
-        .card-body {
-            .navbar {
-                .form-inline {
-                    width: 100%;
-                    display: flex;
-                    input {
-                        width: 80%;
+    .card-body {
+        .navbar {
+            .form-inline {
+                width: 100%;
+                display: flex;
+                input {
+                    width: 80%;
+                }
+                button {
+                    margin-left: 15px;
+                    flex: 1;
+                }
+            }
+        }
+        table {
+            td,
+            th {
+                vertical-align: middle;
+            }
+            td.acoes {
+                @media (max-width: 767px) {
+                    text-align: center;
+                }
+                a {
+                    @media (min-width: 767px) {
+                        margin-right: 10px;
                     }
-                    button {
-                        margin-left: 15px;
-                        flex: 1;
+                    transition: opacity 0.3s;
+                    &:hover {
+                        opacity: 0.5;
                     }
                 }
             }
-            table {
-                td, th {
-                    vertical-align: middle;
-                }
-                td.acoes {
-                    @media (max-width: 767px) {
-                        text-align: center;
-                    }
-                    a {
-                        @media (min-width: 767px) {
-                            margin-right: 10px;
-                        }
-                        transition: opacity .3s;
-                        &:hover {
-                            opacity: .5;
-                        }
-                    }
-                }
+        }
+        > nav.d-flex {
+            @media (max-width: 767px) {
+                flex-wrap: wrap;
             }
-        }        
+            .pagination.only-phone {
+                margin-top: 5px;
+                width: 100%;
+            }
+        }
     }
 }
 
@@ -107,12 +115,19 @@ body {
     a {
         text-decoration: none;
     }
-    ul, p {
+    ul,
+    p {
         margin: 0;
     }
 
     @media (max-width: 767px) {
         .hidden-phone {
+            display: none !important;
+        }
+    }
+
+    @media (min-width: 767px) {
+        .only-phone {
             display: none !important;
         }
     }
