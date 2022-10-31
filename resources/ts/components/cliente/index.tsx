@@ -18,21 +18,20 @@ class Cliente {
 
     private static logs: IModule[] = [];
 
-    public static iniciar = (bodyId: 'listar' | 'cadastrar' | 'atualizar' | 'deletar' | 'detalhes' ): void => {
+    public static iniciar = (bodyId: 'listar' | 'cadastrar' | 'atualizar' | 'detalhes' ): void => {
+        this.logs.push(
+            { 'nome': 'EXIGIR CONFIRMACAO DE ACAO', 'resposta': this.exigirConfirmacaoDeAcao() }
+        );
+
+        if(bodyId == 'atualizar' || bodyId == 'cadastrar') {
+            this.logs.push(
+                { 'nome': 'ADICIONAR MASCARA NO TELEFONE', 'resposta': this.adicionarMascaraDeEntrada() }
+            );
+        }
 
         if(bodyId !== 'listar') {
-            if(bodyId !== 'detalhes') {
-                this.logs.push(
-                    { 'nome': 'ADICIONAR_MASCARA_NO_TELEFONE', 'resposta': this.adicionarMascaraDeEntrada() }
-                );
-            }
-
             this.logs.push(
-                { 'nome': 'RENDERIZAR_SERVICOS_CONTRATADOS', 'resposta': this.renderizarServicosContratados() }
-            );
-
-            this.logs.push(
-                { 'nome': 'ABRIR_MODAL', 'resposta': this.exigirConfirmacao() }
+                { 'nome': 'RENDERIZAR SERVICOS CONTRATADOS', 'resposta': this.renderizarServicosContratados() }
             );
         }
     }
@@ -51,10 +50,10 @@ class Cliente {
         }
     }
 
-    private static exigirConfirmacao = (): IResponse => {
+    private static exigirConfirmacaoDeAcao = (): IResponse => {
         try {
             $('a[data-need-confirmation="true"]').on('click', (event) => {
-                const $target = $(event.target),    
+                const $target = event.target.nodeName == 'A' ? $(event.target) : $(event.target).closest('a'),    
                     href = $target?.attr('href'),
                     message = $target?.data('message') ?? 'Você realmente deseja prosseguir com esta ação?';
     

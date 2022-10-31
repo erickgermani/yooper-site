@@ -42,7 +42,7 @@
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div class="card-header">Detalhes do cliente</div>
+                    <div class="card-header">Clientes > Detalhes</div>
                     <div class="card-body">
                         <div class="mb-3">
                             <p class="form-label">

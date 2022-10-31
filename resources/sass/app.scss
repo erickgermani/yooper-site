@@ -8,7 +8,7 @@
 @import 'bootstrap/scss/bootstrap';
 
 #app {
-    .navbar {
+    > .navbar {
         background-color: var(--cor-principal) !important;
         .container {
             .navbar-brand {
@@ -35,6 +35,15 @@
             }
         }
     }
+    > .py-4 {
+        .container {
+            .card {
+                .card-header {
+                    user-select: none;
+                }
+            }
+        }
+    }
 }
 
 div.acoes {
@@ -57,13 +66,40 @@ div.acoes {
 
 .cliente {
     &#listar {
-        td.acoes {
-            a:first-child {
-                margin-right: 10px;
+        .card-body {
+            .navbar {
+                .form-inline {
+                    width: 100%;
+                    display: flex;
+                    input {
+                        width: 80%;
+                    }
+                    button {
+                        margin-left: 15px;
+                        flex: 1;
+                    }
+                }
             }
-        }
-
-        
+            table {
+                td, th {
+                    vertical-align: middle;
+                }
+                td.acoes {
+                    @media (max-width: 767px) {
+                        text-align: center;
+                    }
+                    a {
+                        @media (min-width: 767px) {
+                            margin-right: 10px;
+                        }
+                        transition: opacity .3s;
+                        &:hover {
+                            opacity: .5;
+                        }
+                    }
+                }
+            }
+        }        
     }
 }
 
@@ -73,5 +109,11 @@ body {
     }
     ul, p {
         margin: 0;
+    }
+
+    @media (max-width: 767px) {
+        .hidden-phone {
+            display: none !important;
+        }
     }
 }

@@ -25,7 +25,7 @@
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div class="card-header">Cadastrar cliente</div>
+                    <div class="card-header">Clientes > Cadastrar</div>
 
                     <div class="card-body">
                         <form method="post" action="{{ route('cliente.cadastrar') }}">
@@ -33,7 +33,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nome</label>
-                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}">
+                                <input type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>
                                 @error('nome')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -43,7 +43,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email"  value="{{ old('email') }}">
+                                <input type="email" class="form-control" name="email"  value="{{ old('email') }}" required>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -53,7 +53,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Telefone</label>
-                                <input type="text" class="form-control" name="telefone" value="{{ old('telefone') }}" maxlength="15">
+                                <input type="text" class="form-control" name="telefone" value="{{ old('telefone') }}" maxlength="15" required>
                                 @error('telefone')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -63,7 +63,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nome da empresa</label>
-                                <input type="text" class="form-control" name="nome-da-empresa" value="{{ old('nome-da-empresa') }}">
+                                <input type="text" class="form-control" name="nome-da-empresa" value="{{ old('nome-da-empresa') }}" required>
                                 @error('nome-da-empresa')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>

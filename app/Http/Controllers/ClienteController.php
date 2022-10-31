@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateClienteRequest;
 use App\Models\Servico;
 use App\Models\ServicoContratado;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -40,8 +41,7 @@ class ClienteController extends Controller
             } else {
                 return redirect(route('feedback', [
                     "titulo" => "Falha",
-                    "mensagem" => "Um erro ocorreu e não foi possível carregar as informações necessárias. Tente novamente mais tarde.",
-                    "pagina_anterior" => route('home')
+                    "mensagem" => "Um erro ocorreu e não foi possível carregar as informações necessárias. Tente novamente mais tarde."
                 ]));
             }
         } catch (Exception $ex) {
@@ -49,8 +49,7 @@ class ClienteController extends Controller
 
             return redirect(route('feedback', [
                 "titulo" => "Falha",
-                "mensagem" => "Um erro ocorreu e não foi possível carregar as informações necessárias. Tente novamente mais tarde.",
-                "pagina_anterior" => route('home')
+                "mensagem" => "Um erro ocorreu e não foi possível carregar as informações necessárias. Tente novamente mais tarde."
             ]));
         }
     }
@@ -80,16 +79,14 @@ class ClienteController extends Controller
 
             return redirect(route('feedback', [
                 "titulo" => "Sucesso",
-                "mensagem" => "Cliente cadastrado com sucesso.",
-                "pagina_anterior" => route('home')
+                "mensagem" => "Cliente cadastrado com sucesso."
             ]));
         } catch (Exception $ex) {
             Log::error($ex);
 
             return redirect(route('feedback', [
                 "titulo" => "Falha",
-                "mensagem" => "Não foi possível cadastrar o cliente. Tente novamente mais tarde.",
-                "pagina_anterior" => route('cliente.cadastrar')
+                "mensagem" => "Não foi possível cadastrar o cliente. Tente novamente mais tarde."
             ]));
         }
     }
@@ -109,8 +106,7 @@ class ClienteController extends Controller
             } else {
                 return redirect(route('feedback', [
                     "titulo" => "Falha",
-                    "mensagem" => "Cliente não encontrado.",
-                    "pagina_anterior" => route('home')
+                    "mensagem" => "Cliente não encontrado."
                 ]));
             }
         } catch (Exception $ex) {
@@ -118,8 +114,7 @@ class ClienteController extends Controller
 
             return redirect(route('feedback'), [
                 "titulo" => "Falha",
-                "mensagem" => "Não foi possível encontrar o cliente. Tente novamente mais tarde.",
-                "pagina_anterior" => route('home')
+                "mensagem" => "Não foi possível encontrar o cliente. Tente novamente mais tarde."
             ]);
         }
     }
@@ -139,8 +134,7 @@ class ClienteController extends Controller
             } else {
                 return redirect(route('feedback', [
                     "titulo" => "Falha",
-                    "mensagem" => "Cliente não encontrado.",
-                    "pagina_anterior" => route('home')
+                    "mensagem" => "Cliente não encontrado."
                 ]));
             }
         } catch (Exception $ex) {
@@ -148,8 +142,7 @@ class ClienteController extends Controller
 
             return redirect(route('feedback', [
                 "titulo" => "Falha",
-                "mensagem" => "Não foi possível encontrar o cliente. Tente novamente mais tarde.",
-                "pagina_anterior" => route('home')
+                "mensagem" => "Não foi possível encontrar o cliente. Tente novamente mais tarde."
             ]));
         }
     }
@@ -199,14 +192,12 @@ class ClienteController extends Controller
 
                 return redirect(route('feedback', [
                     "titulo" => "Sucesso",
-                    "mensagem" => "O cliente foi atualizado com sucesso!",
-                    "pagina_anterior" => route('cliente.detalhes', ["id" => $id])
+                    "mensagem" => "O cliente foi atualizado com sucesso!"
                 ]));
             } else {
                 return redirect(route('feedback', [
                     "titulo" => "Falha",
                     "mensagem" => "Cliente não encontrado.",
-                    "pagina_anterior" => route('home')
                 ]));
             }
         } catch (Exception $ex) {
@@ -214,8 +205,7 @@ class ClienteController extends Controller
 
             return redirect(route('feedback', [
                 "titulo" => "Falha",
-                "mensagem" => "Não foi possível atualizar o cliente. Tente novamente mais tarde.",
-                "pagina_anterior" => route('cliente.atualizar', ["id" => $id])
+                "mensagem" => "Não foi possível atualizar o cliente. Tente novamente mais tarde."
             ]));
         }
     }
@@ -240,14 +230,12 @@ class ClienteController extends Controller
                 
                 return redirect(route('feedback', [
                     "titulo" => "Sucesso",
-                    "mensagem" => "O cliente foi deletado com sucesso.",
-                    "pagina_anterior" => route('home')
+                    "mensagem" => "O cliente foi deletado com sucesso."
                 ]));
             } else {
                 return redirect(route('feedback', [
                     "titulo" => "Falha",
-                    "mensagem" => "Cliente não encontrado.",
-                    "pagina_anterior" => route('home')
+                    "mensagem" => "Cliente não encontrado."
                 ]));
             }            
         } catch (Exception $ex) {
@@ -255,9 +243,20 @@ class ClienteController extends Controller
 
             return redirect(route('feedback', [
                 "titulo" => "Falha",
-                "mensagem" => "Não foi possível excluir o cliente. Tente novamente mais tarde.",
-                "pagina_anterior" => route('cliente.detalhes', [ "id" => $id])
+                "mensagem" => "Não foi possível excluir o cliente. Tente novamente mais tarde."
             ]));
         }
+    }
+
+    public function search(Request $request) 
+    {
+        $query = '%'.$request->input('query').'%';
+
+        $clientes = Cliente::where('nome', 'like', $query)->paginate(10);
+
+        return view('cliente.listar', [
+            "clientes" => $clientes,
+            "query" => $request->input('query')
+        ]);
     }
 }

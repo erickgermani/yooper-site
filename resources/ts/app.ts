@@ -11,7 +11,7 @@ const debug = true;
 const { classList } = document.body;
 
 if(classList.contains('cliente')) {
-    const bodyId = document.body.getAttribute('id') as 'listar' | 'cadastrar' | 'atualizar' | 'deletar' | 'detalhes';
+    const bodyId = document.body.getAttribute('id') as 'listar' | 'cadastrar' | 'atualizar' | 'detalhes';
     Cliente.iniciar(bodyId);
 }
 

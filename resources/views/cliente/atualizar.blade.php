@@ -44,7 +44,7 @@
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div class="card-header">Atualizar cliente</div>
+                    <div class="card-header">Clientes > Atualizar</div>
                     <div class="card-body">
                         <form method="post" action="{{ route('cliente.atualizar', ['id' => $cliente->id]) }}"
                             data-need-confirmation="true"
@@ -53,7 +53,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nome</label>
-                                <input type="text" class="form-control" name="nome" value="{{ $cliente->nome }}">
+                                <input type="text" class="form-control" name="nome" value="{{ $cliente->nome }}" required>
                                 @error('nome')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -63,7 +63,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" value="{{ $cliente->email }}">
+                                <input type="email" class="form-control" name="email" value="{{ $cliente->email }}" required>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -74,7 +74,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Telefone</label>
                                 <input type="text" class="form-control" name="telefone" value="{{ $cliente->telefone }}"
-                                    maxlength="15">
+                                    minlength="14" maxlength="15" required>
                                 @error('telefone')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>
@@ -85,7 +85,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Nome da empresa</label>
                                 <input type="text" class="form-control" name="nome-da-empresa"
-                                    value="{{ $cliente->nome_da_empresa }}">
+                                    value="{{ $cliente->nome_da_empresa }}" required>
                                 @error('nome-da-empresa')
                                     <span class="invalid-feedback" role="alert" style="display: block;">
                                         <strong>{{ $message }}</strong>

@@ -26,19 +26,13 @@ class UpdateClienteRequest extends FormRequest
     public function messages()
     {
         return [
-            "required" => "O campo :attribute é obrigatório",
-
-            "min" => "O campo :attribute tem um mínimo de :min caracteres.",
-            "max" => "O campo :attribute tem um mínimo de :max caracteres.",
-
             "telefone.min" => "O campo :attribute está em um formato inválido.",
             "telefone.max" => "O campo :attribute está em um formato inválido.",
 
-            "email.email" => "O campo :attribute está inválido.",
-
             "nome-da-empresa.required" => "O campo nome da empresa é obrigatório.",
 
-            "servicos-contratados.required" => "É necessário selecionar ao menos um serviço"
+            "servicos-contratados.required" => "É necessário selecionar ao menos um serviço",
+            "servicos-contratados.min" => "É necessário selecionar ao menos um serviço"
         ];
     }
 }

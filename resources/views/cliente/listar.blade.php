@@ -13,43 +13,77 @@
         <div class="row justify-content-center">
             <div class="col-md-11">
                 <div class="card">
-                    <div class="card-header">Clientes cadastrados</div>
+                    <div class="card-header">Clientes > Listagem</div>
                     <div class="card-body">
+                        <nav class="navbar">
+                            <form class="form-inline" action="{{ route('cliente.procurar') }}" method="post">
+                                @csrf
+                                <input class="form-control mr-sm-2" type="search" name="query" placeholder="Procurar"
+                                    aria-label="Search"
+                                    @if (isset($query)) value="{{ $query }}" @endif>
+                                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Procurar</button>
+                            </form>
+                        </nav>
+
+                        <hr>
+
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">Telefone</th>
+                                    <th scope="col" class="hidden-phone">Telefone</th>
                                     <th scope="col">Serviços Contratados</th>
                                     <th scope="col">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($clientes as $cliente)
-                                    <tr data-cliente-id="{{ $cliente->id }} ">
-                                        <td> <a href="{{ route('cliente.detalhes', [ "id" => $cliente->id ]) }}">{{ $cliente->nome }} </a> </td>
-                                        <td> {{ $cliente->telefone }} </td>
+                                @foreach ($clientes as $cliente)
+                                    <tr>
+                                        <td> <a href="{{ route('cliente.detalhes', ['id' => $cliente->id]) }}">{{ $cliente->nome }}
+                                            </a> </td>
+                                        <td class="hidden-phone"> {{ $cliente->telefone }} </td>
                                         <td>
                                             @php
                                                 $servicos_contratados = ServicoContratado::where('cliente_id', 'like', $cliente->id)->get();
-
+                                                
                                                 $array_servicos_contratados = [];
-
-                                                foreach($servicos_contratados as $servico_contratado) {
+                                                
+                                                foreach ($servicos_contratados as $servico_contratado) {
                                                     $servico = Servico::find($servico_contratado->servico_id);
-
+                                                
                                                     array_push($array_servicos_contratados, $servico->nome);
                                                 }
-
-                                                echo implode(' | ', $array_servicos_contratados);                                                
+                                                
+                                                echo implode(' | ', $array_servicos_contratados);
                                             @endphp
                                         </td>
-                                        <td class="acoes"> 
-                                            <a href="{{ route('cliente.detalhes', [ "id" => $cliente->id ]) }}"> 
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M23.111 20.058l-4.977-4.977c.965-1.52 1.523-3.322 1.523-5.251 0-5.42-4.409-9.83-9.829-9.83-5.42 0-9.828 4.41-9.828 9.83s4.408 9.83 9.829 9.83c1.834 0 3.552-.505 5.022-1.383l5.021 5.021c2.144 2.141 5.384-1.096 3.239-3.24zm-20.064-10.228c0-3.739 3.043-6.782 6.782-6.782s6.782 3.042 6.782 6.782-3.043 6.782-6.782 6.782-6.782-3.043-6.782-6.782zm2.01-1.764c1.984-4.599 8.664-4.066 9.922.749-2.534-2.974-6.993-3.294-9.922-.749z"/></svg>
+                                        <td class="acoes">
+                                            <a href="{{ route('cliente.detalhes', ['id' => $cliente->id]) }}">
+                                                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"
+                                                    fill-rule="evenodd" clip-rule="evenodd">
+                                                    <path
+                                                        d="M15.853 16.56c-1.683 1.517-3.911 2.44-6.353 2.44-5.243 0-9.5-4.257-9.5-9.5s4.257-9.5 9.5-9.5 9.5 4.257 9.5 9.5c0 2.442-.923 4.67-2.44 6.353l7.44 7.44-.707.707-7.44-7.44zm-6.353-15.56c4.691 0 8.5 3.809 8.5 8.5s-3.809 8.5-8.5 8.5-8.5-3.809-8.5-8.5 3.809-8.5 8.5-8.5z" />
+                                                </svg>
                                             </a>
-                                            <a href="{{ route('cliente.atualizar', [ "id" => $cliente->id ]) }}"> 
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21.41 14.515c.237-.893 1.314-.889 2.59-1.208v-2.612c-.907-.227-2.352-.313-2.592-1.217l-.001-.006c-.239-.89.639-1.373 1.639-2.34l-1.306-2.263c-.911.26-2.195.903-2.863.237-.646-.643-.114-1.552.255-2.845l-2.263-1.306c-.649.671-1.446 1.878-2.348 1.637l-.006-.001c-.892-.238-.889-1.313-1.209-2.591h-2.612c-.228.911-.313 2.351-1.217 2.592l-.006.002c-.891.238-1.373-.64-2.34-1.64l-2.262 1.307c.26.911.903 2.195.237 2.863-.644.646-1.553.114-2.845-.255l-1.306 2.262c.67.649 1.878 1.446 1.637 2.348l-.001.006c-.238.893-1.317.89-2.59 1.208v2.612c.907.227 2.352.313 2.592 1.217l.002.006c.238.891-.64 1.373-1.64 2.34l1.306 2.263c.911-.26 2.195-.903 2.863-.237.646.643.114 1.552-.255 2.845l2.263 1.306c.649-.671 1.446-1.878 2.348-1.637l.006.001c.893.238.889 1.313 1.208 2.59h2.612c.228-.911.313-2.351 1.217-2.592l.006-.002c.891-.238 1.373.64 2.34 1.64l2.263-1.306c-.26-.909-.904-2.193-.237-2.863.643-.646 1.552-.114 2.845.255l1.306-2.263c-.671-.649-1.878-1.446-1.637-2.348l.001-.005zm-9.41 1.485c-2.209 0-4-1.791-4-4s1.791-4 4-4 4 1.791 4 4-1.791 4-4 4z"/></svg> 
+
+                                            <a class="hidden-phone"
+                                                href="{{ route('cliente.atualizar', ['id' => $cliente->id]) }}">
+                                                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"
+                                                    fill-rule="evenodd" clip-rule="evenodd">
+                                                    <path
+                                                        d="M8.071 21.586l-7.071 1.414 1.414-7.071 14.929-14.929 5.657 5.657-14.929 14.929zm-.493-.921l-4.243-4.243-1.06 5.303 5.303-1.06zm9.765-18.251l-13.3 13.301 4.242 4.242 13.301-13.3-4.243-4.243z" />
+                                                </svg>
+                                            </a>
+
+                                            <a class="hidden-phone"
+                                                href="{{ route('cliente.deletar', ['id' => $cliente->id]) }}"
+                                                data-need-confirmation="true"
+                                                data-message="Deseja realmente excluir o cliente {{ $cliente->nome }}?">
+                                                <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"
+                                                    fill-rule="evenodd" clip-rule="evenodd">
+                                                    <path
+                                                        d="M9 3h6v-1.75c0-.066-.026-.13-.073-.177-.047-.047-.111-.073-.177-.073h-5.5c-.066 0-.13.026-.177.073-.047.047-.073.111-.073.177v1.75zm11 1h-16v18c0 .552.448 1 1 1h14c.552 0 1-.448 1-1v-18zm-10 3.5c0-.276-.224-.5-.5-.5s-.5.224-.5.5v12c0 .276.224.5.5.5s.5-.224.5-.5v-12zm5 0c0-.276-.224-.5-.5-.5s-.5.224-.5.5v12c0 .276.224.5.5.5s.5-.224.5-.5v-12zm8-4.5v1h-2v18c0 1.105-.895 2-2 2h-14c-1.105 0-2-.895-2-2v-18h-2v-1h7v-2c0-.552.448-1 1-1h6c.552 0 1 .448 1 1v2h7z" />
+                                                </svg>
                                             </a>
                                         </td>
                                     </tr>
@@ -64,7 +98,8 @@
                         <div class="acoes">
                             <a href="{{ route('home') }}" class="btn btn-primary btn-principal">Voltar</a>
                             <div>
-                                <a href="{{ route('cliente.cadastrar') }}" class="btn btn-outline-primary btn-principal">Cadastrar cliente</a>
+                                <a href="{{ route('cliente.cadastrar') }}"
+                                    class="btn btn-outline-primary btn-principal">Cadastrar cliente</a>
                             </div>
                         </div>
                     </div>

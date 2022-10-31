@@ -5,7 +5,6 @@
 @php
     $titulo = request()->input('titulo') ? request()->input('titulo') : 'Falha';
     $mensagem = request()->input('mensagem') ? request()->input('mensagem') : 'Ops!! Algo deu errado!';
-    $pagina_anterior = request()->input('pagina_anterior') ? request()->input('pagina_anterior') : route('home');
 @endphp
 
 @section('content')
@@ -23,7 +22,7 @@
                         <div class="acoes">
                             <button type="button" onclick="@if($titulo == 'Falha') history.back(); @else {{ 'location.assign("'.route('home').'");' }} @endif" class="btn btn-outline-primary btn-principal">Voltar</button>
                             <div>
-                                <a href="{{ route('cliente.listar') }}" class="btn btn-outline-primary btn-principal">Ver todos os cadastros</a>
+                                <a href="{{ route('cliente.listar') }}" class="btn btn-outline-primary btn-principal">Ver todos os clientes</a>
                             </div>
                         </div>
                     </div>

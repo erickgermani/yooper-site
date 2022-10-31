@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::redirect('/', '/app/home');
 
 Route::prefix('app')->group(function() {
@@ -49,5 +38,7 @@ Route::prefix('app')->group(function() {
         Route::post('/atualizar/{id}', 'App\Http\Controllers\ClienteController@update');
 
         Route::get('/deletar/{id}', 'App\Http\Controllers\ClienteController@destroy')->name('cliente.deletar');
+
+        Route::post('/procurar', 'App\Http\Controllers\ClienteController@search')->name('cliente.procurar');
     });
 });
