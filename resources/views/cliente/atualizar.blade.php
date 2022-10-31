@@ -102,8 +102,7 @@
                             <hr>
 
                             <div class="acoes">
-                                <a href="{{ route('cliente.detalhes', ['id' => $cliente->id]) }}"
-                                    class="btn btn-primary btn-principal">Voltar</a>
+                                <button type="button" onclick="history.back();" class="btn btn-outline-primary btn-principal">Voltar</button>
                                 <div>
                                     <a href="{{ route('cliente.deletar', ['id' => $cliente->id]) }}"
                                         class="btn btn-outline-danger" data-need-confirmation="true"

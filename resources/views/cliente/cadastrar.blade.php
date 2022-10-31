@@ -85,7 +85,7 @@
                             <hr>
 
                             <div class="acoes">
-                                <a href="{{ route('home') }}" class="btn btn-primary btn-principal">Voltar</a>
+                                <button type="button" onclick="history.back();" class="btn btn-outline-primary btn-principal">Voltar</button>
                                 <div>
                                     <button type="submit" class="btn btn-primary btn-principal">Cadastrar</button>
                                 </div>

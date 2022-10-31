@@ -6,6 +6,7 @@
 @php
     use App\Models\ServicoContratado;
     use App\Models\Servico;
+    use App\Models\User;
 @endphp
 
 @section('scripts')
@@ -43,6 +44,27 @@
                 <div class="card">
                     <div class="card-header">Detalhes do cliente</div>
                     <div class="card-body">
+                        <div class="mb-3">
+                            <p class="form-label">
+                                Cadastrado por 
+                                @php
+                                    $user = User::find($cliente->cadastrado_por);
+
+                                    echo $user->name . ' em ' . $user->created_at;
+                                @endphp
+                            </p>
+                            <p class="form-label">
+                                Atualizado a última vez por
+                                @php
+                                    $user = User::find($cliente->atualizado_por);
+
+                                    echo $user->name . ' em ' . $user->updated_at;
+                                @endphp
+                            </p>
+                        </div>
+
+                        <hr>
+
                         <div class="mb-3">
                             <label class="form-label">Nome</label>
                             <input type="text" class="form-control" name="nome" value="{{ $cliente->nome }}" disabled>
@@ -95,7 +117,7 @@
                         <hr>
 
                         <div class="acoes">
-                            <a href="{{ route('home') }}" class="btn btn-primary btn-principal">Voltar</a>
+                            <button type="button" onclick="history.back();" class="btn btn-outline-primary btn-principal">Voltar</button>
                             <div>
                                 <a href="{{ route('cliente.deletar', ['id' => $cliente->id]) }}"
                                     class="btn btn-outline-danger" data-need-confirmation="true"

@@ -27,7 +27,7 @@
                             <tbody>
                                 @foreach($clientes as $cliente)
                                     <tr data-cliente-id="{{ $cliente->id }} ">
-                                        <td> {{ $cliente->nome }} </td>
+                                        <td> <a href="{{ route('cliente.detalhes', [ "id" => $cliente->id ]) }}">{{ $cliente->nome }} </a> </td>
                                         <td> {{ $cliente->telefone }} </td>
                                         <td>
                                             @php

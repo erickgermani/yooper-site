@@ -18,18 +18,23 @@ class Cliente {
 
     private static logs: IModule[] = [];
 
-    public static iniciar = (): void => {
-        this.logs.push(
-            { 'nome': 'RENDERIZAR_SERVICOS_CONTRATADOS', 'resposta': this.renderizarServicosContratados() }
-        );
+    public static iniciar = (bodyId: 'listar' | 'cadastrar' | 'atualizar' | 'deletar' | 'detalhes' ): void => {
 
-        this.logs.push(
-            { 'nome': 'ADICIONAR_MASCARA_NO_TELEFONE', 'resposta': this.adicionarMascaraDeEntrada() }
-        );
+        if(bodyId !== 'listar') {
+            if(bodyId !== 'detalhes') {
+                this.logs.push(
+                    { 'nome': 'ADICIONAR_MASCARA_NO_TELEFONE', 'resposta': this.adicionarMascaraDeEntrada() }
+                );
+            }
 
-        this.logs.push(
-            { 'nome': 'ABRIR_MODAL', 'resposta': this.exigirConfirmacao() }
-        );
+            this.logs.push(
+                { 'nome': 'RENDERIZAR_SERVICOS_CONTRATADOS', 'resposta': this.renderizarServicosContratados() }
+            );
+
+            this.logs.push(
+                { 'nome': 'ABRIR_MODAL', 'resposta': this.exigirConfirmacao() }
+            );
+        }
     }
 
     public static debug = (): void => {

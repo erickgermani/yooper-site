@@ -21,7 +21,7 @@
                         <hr>
 
                         <div class="acoes">
-                            <a href="{{ $pagina_anterior }}" class="btn btn-outline-primary btn-principal">Voltar</a>
+                            <button type="button" onclick="@if($titulo == 'Falha') history.back(); @else {{ 'location.assign("'.route('home').'");' }} @endif" class="btn btn-outline-primary btn-principal">Voltar</button>
                             <div>
                                 <a href="{{ route('cliente.listar') }}" class="btn btn-outline-primary btn-principal">Ver todos os cadastros</a>
                             </div>
